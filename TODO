@@ -1,0 +1,81 @@
+Functionality:
+- tell when it will stop raining
+- tell what the chance of rain is for today
+- tell when is the next time it will rain
+- weather summary - feels like, temperature, wind, summary
+
+Inputs:
+- stop rain:
+  - ask {x} when it will stop raining in {zip}
+  - ask {x} when will it stop raining
+  - ask {x} when the rain will stop
+- next rain:
+  - ask {x} if it will rain in {zip}
+  - ask {x} if it'll rain
+  - ask {x} if it will rain today
+  - ask {x} if it'll rain today
+  - ask {x} when it will rain next
+  - ask {x} when it'll rain next
+  - ask {x} if i need an umbrella
+  - ask {x} if i should bring an umbrella
+  - ask {x} if there's going to be rain
+  - ask {x} if there's going to be rain today
+- future rain:
+  - ask {x} if it will rain at 3pm
+  - ask {x} if it will rain tomorrow
+  - ask {x} if it will rain on tuesday
+    * Only supports next 7 days
+- dump:
+  - ask {x} about the chance of rain today
+
+Outputs:
+- stop rain:
+  - Heavy rain for the next 10 minutes. Light rain for 37 minutes after that. Will rain for the rest of the day.
+  - Light rain for the next 37 minutes. Chance of rain decreases at 3pm.
+  - It's not raining right now.
+- next rain:
+  - If raining now: return stop rain statement
+  - x% chance of rain starting at {time} and chance will {increase/decrease/stay the same} until {time}.
+  - There is a small chance of rain from {time} to {time}. At {time}, there is a medium chance of rain until {time}. At {time}, there is a high chance of rain until {time}.
+  - ** complicated!
+- future rain:
+  - On Tuesday, there is a 20% chance of rain.
+  - At 5pm, there is a 30% chance of rain {until 7pm}. The chance of rain {increases/dec} after that.
+- dump:
+  - 20% chance from x-y, 30% from y-x, and no chance after x.
+
+For outputting rain chance:
+- only care about {start time} - "end of day" on that start time (midnight?)
+- prioritize high chances and high intensities
+- if low -> high chance, "100% chance it'll rain starting at 3pm and a smaller chance it'll rain before that too."
+- Simplest: aggregate consecutive times by probability. Read it all.
+- Also simple: "small" = 10-30, "medium" = 40-60, "high" = 70-90, "guaranteed" = 100. bucket by that for everything but dump
+
+Queries:
+- date + hour -> chance of rain
+-
+
+Classes:
+- RainSummary:
+  - 0 => no, 1 => small, 2 => medium, 3 => high, 4 => guaranteed
+  - map from prob to number
+  - map from number to english
+- RainBucket:
+  - date / hour / time
+  - bucket level (minute / hour / day) - should have start and end
+  - intensity
+  - percent
+  - summary enum
+  - this could also aggregations with adjacent buckets
+- RainMaster:
+  - answers queries
+  - holds data in order within buckets
+  - returns relevant buckets
+  - getNextRain(): [buckets]
+  - getCurrentRain(): [buckets]
+  - getFutureRain(): [buckets]
+- RainWords:
+  - takes bucketed rain data + context
+- API loader:
+  - given zip code, query and construct data
+  - given lat long, query and construct data

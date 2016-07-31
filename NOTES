@@ -1,0 +1,10 @@
+- precipIntensity: A numerical value representing the average expected
+  intensity (in inches of liquid water per hour) of precipitation
+  occurring at the given time conditional on probability (that is,
+  assuming any precipitation occurs at all). A very rough guide:
+  - 0 in./hr. corresponds to no precipitation
+  - 0.002 in./hr. corresponds to very light precipitation
+  - 0.017 in./hr. corresponds to light precipitation
+  - 0.1 in./hr. corresponds to moderate precipitation
+  - 0.4 in./hr. corresponds to heavy precipitation
+- alexa doesn't support user location -_-
